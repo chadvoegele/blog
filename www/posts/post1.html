@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<!-- Theme from 3rd Wave Media -->
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
+<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
+<head>
+  <title>Post1</title>
+  <!-- Meta -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Chad Voegele's Blog">
+  <meta name="author" content="Chad Voegele">
+  <link href='https://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/katex.min.css">
+  <link id="theme-style" rel="stylesheet" href="../assets/css/styles.css">
+  <link id="theme-style" rel="stylesheet" href="../assets/css/navbar.css">
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar-collapse" aria-expanded="false">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-navbar-collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="http://www.chadvoegele.com">Home</a></li>
+          <li><a href="https://blog.chadvoegele.com">Blog</a></li>
+          <li><a href="https://projects.chadvoegele.com">Projects</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+
+  <div class="container sections-wrapper">
+    <div class="row">
+      <div class="primary col-md-offset-1 col-md-10 col-sm-12 col-xs-12">
+        <section class="experience section">
+          <div class="section-inner">
+            <h2 class="heading">Using CNNs To Understand Yelp Users Reviews</h2>
+            <div class="content">
+              <div class="row item">
+                <div class="col-md-12 col-lg-12">
+                  <div class="post-content">
+                    <div class="col-md-12 col-lg-12">
+                      <div class="row">
+                        <p>
+                        Unstructured text is hard to process and understand in
+                        large amounts. Typically this section of the data set is
+                        passed over in favor quantitative questions like "Rate your
+                        food on a scale from 1 to 5." Let's see if the
+                        world-famous deep networks can come to the rescue.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12 col-lg-12">
+                      <div class="row">
+                        <h3>Data</h3>
+                        <p>
+                        I grabbed a Yelp review 
+                        <a href="https://www.kaggle.com/c/yelp-recsys-2013/data">data set</a> 
+                        from Kaggle that contained review text and star ratings. Here are some examples.
+                        </p>
+
+                        <div class="row">
+                          <div class="col-md-1"></div>
+                          <div class="col-md-10">
+                            <table class="table table-bordered">
+                              <tr>
+                                <th class="col-md-4">Review</th>
+                                <th class="col-md-1">Stars</th>
+                              </tr>
+                              <tr>
+                                <td class="col-md-4">
+                                  Good, imaginative food, excellent service and
+                                  atmosphere. The duck empanada appetizer was the
+                                  highlight. Wine list a little on the short side,
+                                  Victoria beer on tap a plus and top self margaritas
+                                  were good but over priced. Overall deserves 4.5 stars
+                                  due to server Lauren.
+                                </td>
+                                <td class="col-md-1">4</td>
+                              </tr>
+                              <tr>
+                                <td class="col-md-4">
+                                  Really? Not very professional and merely sub
+                                  par. Tiny and cramped salon. No top coats for
+                                  finger nails or toes and no scrubbing the
+                                  balls of my feet. (Which is why most of us GO
+                                  get a pedicure) Seemed like they wanted to
+                                  sell me some all natural products, while
+                                  trying to pull me in with their "fun"
+                                  personality. Sorry, I'm going back to Capri
+                                  Nails!
+                                </td>
+                                <td class="col-md-1">1</td>
+                              </tr>
+                              <tr>
+                                <td class="col-md-4">
+                                  I really do like this place! I loove the pad
+                                  thai! it's really filling and yummy! I don't
+                                  care for the key lime pie, it's too sour for
+                                  me. I also love the pear and  baby spinach
+                                  salad, that's always amazing! I've been going
+                                  there for a couple of years now and is one of
+                                  my favorite resturants.
+                                </td>
+                                <td class="col-md-1">3</td>
+                              </tr>
+                            </table>
+                          </div>
+                          <div class="col-md-1"></div>
+                        </div>
+
+                        <p>
+                        Most natural language processing algorithms operate on
+                        words rather than long strings of text so I first broke
+                        each of the reviews into sentences and broke the
+                        sentences into words. I found the <a
+                          href="https://spacy.io/">Spacy</a> library to be
+                        performant and accurate for this task.
+                        </p>
+
+                        <p>
+                        Some reviews contained links and other non-word text
+                        which I stripped using Spacy's <code>is_oov</code> function.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12 col-lg-12">
+                      <div class="row">
+                        <h3>Convolutional Neural Networks</h3>
+                        <p>
+                        Convolutional Neural Networks are data processing
+                        algorithms that rose to fame after achieving 
+                        <a href="https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf">impressive
+                          results</a> in image processing. Sometime after this
+                        they also started to be used for 
+                        <a href="http://www.jmlr.org/papers/volume12/collobert11a/collobert11a.pdf">text</a> 
+                        <a href="https://arxiv.org/pdf/1408.5882v2.pdf">processing</a>.
+                        These algorithms work by converting sentences into
+                        "images" through special vectors called
+                        <em>embeddings</em> that represent that meaning of a
+                        word.
+                        </p>
+
+                        <p>
+                        For analyzing the Yelp review text, I started from a 
+                        <a href="https://www.tensorflow.org/">TensorFlow</a>
+                        <a href="http://www.wildml.com/2015/12/implementing-a-cnn-for-text-classification-in-tensorflow/">implementation</a> 
+                        by Denny Britz and made two modifications.
+                        
+                        <ol>
+                          <li>
+                            Rather than train my own word embeddings, I used 
+                            <a href="https://code.google.com/archive/p/word2vec/">pre-trained ones</a> from Google.
+                          </li>
+                          <li>
+                            Since the Yelp review text contains multiple
+                            sentences, I expanded the sentence "image" into
+                            multiple images and stacked them on top of one
+                            another. From TensorFlow's perspective, these
+                            appear as several color channels.
+                          </li>
+                        </ol>
+                        </p>
+
+                        <p>
+                        Each review is turned into cube with one dimension for
+                        the number of sentences, one for the number of words in
+                        a sentence, and one for representing the word meaning.
+                        </p>
+
+                        <p>
+                        I trained the CNN using the first 40% of the dataset
+                        for training and the next 10% for validation. The
+                        remaining 50% wouldn't fit into memory.
+                        </p>
+
+                        <p>
+                        I used root-mean-squared error to measure how well the
+                        model was fitting the data.
+                        <span id="tex-error" style="text-align: center;"></span>
+                        </p>
+
+                        <p>
+                        During training, I captured the batch error after every
+                        iteration. After 500 batches, I calculated the error
+                        for the entire training set and validation set.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-2"></div>
+                      <div class="col-md-8">
+                        <img height="100%" width="100%" src="cnn_training_loss.svg"/>
+                        <div class="col-md-2"></div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12 col-lg-12">
+                      <div class="row">
+                        <p>
+                        After training finished, I had a validation error of
+                        <b>1.02</b>, meaning the model is off by roughly 1
+                        star.
+                        </p>
+
+                        <p>
+                        Is this good?! Since this isn't for any specific
+                        application, it's hard to say. But we can try comparing
+                        to other approaches to gauge if this is reasonable
+                        performance.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12 col-lg-12">
+                      <div class="row">
+                        <h3>Word Frequency Regression</h3>
+                        <p>
+                        Let's try a simple approach based on
+                        number of times key words appear in the review text. We
+                        might expect that words like "great" and "fantastic"
+                        appear more often in 5-star reviews. We can use
+                        these word counts as a numerical summary of the review
+                        and run a standard linear regression.
+                        </p>
+
+                        <p>
+                        To find these important words, I used a 
+                        <a href="http://dimacs.rutgers.edu/~graham/pubs/papers/encalgs-mg.pdf">
+                          Misra-Gries
+                        </a>
+                        style algorithm to find the most frequent words for a
+                        fixed number of stars. This approach treats the words
+                        in the reviews as a stream, processing them one by one.
+                        This gives a fast and memory-efficient algorithm at the
+                        expense of some inaccuracy in the results.
+                        </p>
+
+                        <p>
+                        Not surprisingly, the most common words in reviews are
+                        function words like "the", "a", and "I". To handle
+                        these, I removed all words which appeared in 4 or more
+                        star ratings. After this, I took the top ten words to
+                        find the key words for each star rating.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-1"></div>
+                      <div class="col-md-10">
+                        <table class="table table-bordered ">
+                          <tr>
+                            <th class="col-md-1">1</th>
+                            <th class="col-md-1">2</th>
+                            <th class="col-md-1">3</th>
+                            <th class="col-md-1">4</th>
+                            <th class="col-md-1">5</th>
+                          </tr>
+                          <tr>
+                            <td class="col-md-1">said</td>
+                            <td class="col-md-1">two</td>
+                            <td class="col-md-1">try</td>
+                            <td class="col-md-1">love</td>
+                            <td class="col-md-1">love</td>
+                          </tr>
+                          <tr>
+                            <td class="col-md-1">her</td>
+                            <td class="col-md-1">said</td>
+                            <td class="col-md-1">ok</td>
+                            <td class="col-md-1">try</td>
+                            <td class="col-md-1">best</td>
+                          </tr>
+                          <tr>
+                            <td class="col-md-1">told</td>
+                            <td class="col-md-1">bad</td>
+                            <td class="col-md-1">bad</td>
+                            <td class="col-md-1">friendly</td>
+                            <td class="col-md-1">friendly</td>
+                          </tr>
+                          <tr>
+                            <td class="col-md-1">minutes</td>
+                            <td class="col-md-1">minutes</td>
+                            <td class="col-md-1">though</td>
+                            <td class="col-md-1">best</td>
+                            <td class="col-md-1">amazing</td>
+                          </tr>
+                          <tr>
+                            <td class="col-md-1">asked</td>
+                            <td class="col-md-1">theater</td>
+                            <td class="col-md-1">love</td>
+                            <td class="col-md-1">delicious</td>
+                            <td class="col-md-1">try</td>
+                          </tr>
+                          <tr>
+                            <td class="col-md-1">bad</td>
+                            <td class="col-md-1">hotel</td>
+                            <td class="col-md-1">burger</td>
+                            <td class="col-md-1">definitely</td>
+                            <td class="col-md-1">delicious</td>
+                          </tr>
+                          <tr>
+                            <td class="col-md-1">another</td>
+                            <td class="col-md-1">another</td>
+                            <td class="col-md-1">sauce</td>
+                            <td class="col-md-1">fresh</td>
+                            <td class="col-md-1">fresh</td>
+                          </tr>
+                          <tr>
+                            <td class="col-md-1">ever</td>
+                            <td class="col-md-1">ok</td>
+                            <td class="col-md-1">being</td>
+                            <td class="col-md-1">happy</td>
+                            <td class="col-md-1">ever</td>
+                          </tr>
+                          <tr>
+                            <td class="col-md-1">should</td>
+                            <td class="col-md-1">day</td>
+                            <td class="col-md-1">d</td>
+                            <td class="col-md-1">hour</td>
+                            <td class="col-md-1">awesome</td>
+                          </tr>
+                          <tr>
+                            <td class="col-md-1">took</td>
+                            <td class="col-md-1">drinks</td>
+                            <td class="col-md-1">chili</td>
+                            <td class="col-md-1">salad</td>
+                            <td class="col-md-1">favorite</td>
+                          </tr>
+                        </table>
+                      </div>
+                      <div class="col-md-1"></div>
+                    </div>
+
+                    <div class="col-md-12 col-lg-12">
+                      <div class="row">
+                        <p>
+                        I collapsed these key words into one set and the
+                        counted their frequency in each review to build a
+                        feature vector. Using 
+                        <a href="http://scikit-learn.org/">
+                          scikit-learn
+                        </a>
+                        's, I ran a linear regression of this feature vector on
+                        the star ratings using the same dataset as in the CNN
+                        approach.
+                        </p>
+
+                        <p>
+                        This gave a training error of <b>1.09</b> and a validation
+                        error of <b>1.09</b>.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12 col-lg-12">
+                      <div class="row">
+                        <h3>Conclusion</h3>
+                        <p>
+                        So the fancy CNN did about the same as the simple word
+                        frequency approach. It's clear from the training errors
+                        that the CNN is over-fitting the training data which
+                        requires further investigation.  Both methods could be
+                        improved further. I didn't spend any time in the dark
+                        art of network architecture design. Could fewer
+                        convolutional layers be better?  Also, the frequency
+                        approach might benefit greatly from bigram counts in
+                        addition to unigram counts.
+                        </p>
+
+                        <p>
+                        Both methods can be used to gain insights from the
+                        review text. In particular, we can investigate the
+                        weights learned during training to find features that
+                        the models think are important. Despite the CNN's more
+                        complicated structure, there are 
+                        <a href="https://www.cs.nyu.edu/~fergus/papers/zeilerECCV2014.pdf">
+                          some promising ideas
+                        </a>
+                        on how to interpret the weights.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12 col-lg-12">
+                      <div class="row">
+                        <h3>Code</h3>
+                        <p>
+                        The code used to generate the results in the post is available 
+                        <a href="">
+                          here
+                        </a>.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12 col-lg-12">
+                      <div class="row">
+                        <h3>Kudos</h3>
+                        <p>
+                        <ul>
+                          <li>Ye Zhang for introducing me to text processing using CNNs</li>
+                          <li>Denny Britz for his great post on using TensorFlow for text CNNs</li>
+                          <li>Yoon Kim for his original work on getting CNNs to work for text</li>
+                        </ul>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div><!--//content-->
+          </div><!--//section-inner-->
+        </section><!--//section-->
+
+      </div><!--//primary-->
+    </div><!--//row-->
+  </div><!--//masonry-->
+
+  <!-- Javascript -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/katex.min.js"></script>
+  <script src="../assets/js/ga.js"></script>
+  <script type="text/javascript">set_ga('UA-83937312-3');</script>
+  <script>
+katex.render("error = \\sqrt{\\frac{1}{n} \\sum (y-\\hat{y})^2}", $('#tex-error').get(0), { displayMode: true });
+  </script>
+</body>
+</html>
