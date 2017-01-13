@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<!-- Theme from 3rd Wave Media -->
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
+<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
+<head>
+  <title>Running Arch Linux on a Surface 3</title>
+  <!-- Meta -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Chad Voegele's Blog">
+  <meta name="author" content="Chad Voegele">
+  <link href='https://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/katex.min.css">
+  <link id="theme-style" rel="stylesheet" href="../assets/css/styles.css">
+  <link id="theme-style" rel="stylesheet" href="../assets/css/navbar.css">
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar-collapse" aria-expanded="false">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-navbar-collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="http://www.chadvoegele.com">Home</a></li>
+          <li><a href="https://blog.chadvoegele.com">Blog</a></li>
+          <li><a href="https://projects.chadvoegele.com">Projects</a></li>
+          <li><a href="http://www.chadvoegele.com/about.html">About</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+
+  <div class="container sections-wrapper">
+    <div class="row">
+      <div class="primary col-md-offset-1 col-md-10 col-sm-12 col-xs-12">
+        <section class="experience section">
+          <div class="section-inner">
+            <h2 class="heading">Running Arch Linux on a Surface 3</h2>
+            <div class="content">
+              <div class="row item">
+                <div class="col-md-12 col-lg-12">
+                  <div class="post-content">
+                    <div class="col-md-12 col-lg-12">
+                      <div class="row">
+                        <p>
+                        I run Arch Linux on all of my computers (except the <a href="https://bugzilla.kernel.org/show_bug.cgi?id=108331">tragedy of the 12" Macbook</a>) so using Windows on my Surface 3 created issues. Mostly, it was hard to view and edit OneNote files across my devices. I wanted to use <a href="https://sourceforge.net/projects/xournal/">Xournal</a>, an open-source note-taking app, which runs natively on GNU/Linux.
+                        </p>
+                        <p>
+                        Here are the steps I followed to get Arch up and running:
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12 col-lg-12">
+                      <div class="row">
+                        <h3>Shrink Windows Partition</h3>
+                        <p>
+                        First, to get some disk space to install Linux, shrink the Windows partition by:
+                        <ol>
+                          <li>opening <a href="https://technet.microsoft.com/en-us/itpro/windows/manage/administrative-tools-in-windows-10">Computer Management</a>,</li>
+                          <li>right-clicking the C:\ drive,</li>
+                          <li>and selecting 'Shrink Volume'</li>
+                        </ol>
+
+                        You will need 5-20+ GB for the Linux installation depending on which applications you install and how much space you want for any personal code, documents, media, etc.
+                        </p>
+                        <p>
+                        It's likely that Windows will tell you that there isn't enough disk space available to shrink more than 2GB. I tried each of these until the available disk space reflected the actual disk usage:
+                        <ol>
+                          <li><a href="http://superuser.com/questions/347927/how-to-really-turn-off-hibernation-in-windows-7/34792">Disabling hibernate</a> by running <code>powercfg /h off</code>.</li>
+                          <li><a href="https://support.microsoft.com/en-us/help/15055/windows-7-optimize-windows-better-performance#1TC=windows-7">Disabling virtual memory</a> by disabling automatic virtual memory and setting the page file size to 0.</li>
+                          <li><a href="https://technet.microsoft.com/en-us/library/ff458356.aspx">Defragmenting the disk</a> by running <code>defrag C: /X /H</code>.</li>
+                          <li>Rebooting.</li>
+                        </ol>
+                        Each of these changes can be reversed after the disk is resized.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12 col-lg-12">
+                      <div class="row">
+                        <h3>Disable Secure Boot</h3>
+                        <p>
+                        Secure Boot verifies the boot loader against a local list of approved kernels before booting. Naturally, our to-be-installed Linux kernel is not approved and thus will not boot. Temporarily disable Secure Boot by:
+                        <ol>
+                          <li>holding volume-up and pressing and releasing the power button to enter the <a href="https://www.microsoft.com/surface/en-us/support/warranty-service-and-recovery/how-to-use-the-bios-uefi?os=windows-10&=undefined">BIOS</a></li>
+                          <li>disabling Secure Boot</li>
+                        </ol>
+                        Later, we'll re-enable Secure Boot to eliminate the unsightly, bright-red boot screen.
+
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12 col-lg-12">
+                      <div class="row">
+                        <h3>Install Arch Linux</h3>
+                        <p>
+                        Follow the <a href="https://wiki.archlinux.org/index.php/installation_guide">wiki instructions</a> to install Arch using a <a href="https://wiki.archlinux.org/index.php/USB_flash_installation_media">USB drive</a>.
+                        <ol>
+                          <li>If you do not see the Arch installation screen, try changing the <a href="https://www.microsoft.com/surface/en-us/support/storage-files-and-folders/boot-surface-from-usb-recovery-device?os=windows-10&=undefined">boot order</a> in the BIOS.</li>
+                          <li>Make sure to not overwrite Windows when partitioning the disks. Observing the partition types from the output of <code>fdisk -l</code> should indicate the Windows partition.</li>
+                          <li>If you have issues connecting to the internet, use a USB Ethernet adapter.</li>
+                          <li>Boot into Linux (and Windows if you really have to) using <a href="https://wiki.archlinux.org/index.php/Systemd-boot#EFI_boot">systemd-boot EFI boot</a>.</li>
+                        </ol>
+                        </p>
+                        <p>
+                        The Linux kernel has improved its Surface 3 support incrementally over the last few years. For full hardware support, install the <a href="https://aur.archlinux.org/packages/linux-surface3-git/">latest Linux kernel with some proposed Surface 3 patches</a>. The included patches add a battery driver, support for lid status and backlight control, and improve the stability of the wireless driver.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12 col-lg-12">
+                      <div class="row">
+                        <h3>Re-enable Secure boot</h3>
+                        <p>
+                        In order to avoid the new kernel being blocked by Secure Boot, we must register its hash the Surface's database. Follow the <a href="https://wiki.archlinux.org/index.php/Secure_Boot#PreLoader">PreLoader instructions</a> to install a hash tool that can add the hash of the just-installed Linux kernel to the database. Be sure to use the <a href="http://blog.hansenpartnership.com/linux-foundation-secure-boot-system-released/">signed</a> <code>PreLoader.efi</code> and <code>HashTool.efi</code>.
+                        </p>
+                        <p>
+                        If successful, the installation should provide a screen that allows you to enroll the hash of the new kernel.
+                        </p>
+                        <p>
+                        <img style="display: block; margin-left: auto; margin-right: auto;" width="400" src="http://www.rodsbooks.com/refind/HashTool1.png" />
+                        </p>
+                        <p>
+                        After enrolling the hash, re-enable Secure Boot in the BIOS.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12 col-lg-12">
+                      <div class="row">
+                        <h3>Configuration</h3>
+                        <p>
+                        Some configuration is needed to reach reasonable defaults for the Surface 3 hardware.
+                        </p>
+
+                        <h4>Inputs</h4>
+                        <p>
+                        The Type Cover, touchscreen, touchpad, and pen all work great using the <a href="https://wiki.archlinux.org/index.php/Libinput">libinput</a> driver. Only the pen needs some configuration so that libinput is used. Utilize an <a href="https://github.com/chadvoegele/system-configs/blob/master/chadsurface/etc/X11/xorg.conf.d/40-spi_pen.conf.pkg">input config</a> in xorg.conf.d to force the pen to use the libinput driver.
+                        </p>
+                        <p>
+                        <pre>
+Section "InputClass"
+    Identifier      "Surface Pen"
+    MatchProduct    "Surface3 SPI Pen Input"
+    MatchDevicePath "/dev/input/event*"
+    Driver          "libinput"
+EndSection
+</pre>
+                        </p>
+                        <p>
+                        Any customizations to the keyboard layout or repeat rate will be lost upon detaching and reattaching the Type Cover if they are made by <code>setxkbmap</code> and <code>xset r</code>. The keyboard layout configuration will be reapplied if made using a <a href="https://github.com/chadvoegele/system-configs/blob/master/chadsurface/etc/X11/xorg.conf.d/00-keyboard.conf.pkg">configuration file</a> in xorg.conf.d.
+                        </p>
+                        <p>
+                        <pre>
+Section "InputClass"
+    Identifier "seyboard"
+    MatchIsKeyboard "on"
+    Option "XkbLayout" "us_prog"
+    Option "XKbOptions" "ctrl:nocaps"
+EndSection
+</pre>
+                        </p>
+                        <p>
+                        The repeat rate will be reapplied if set when invoking <code>X</code> to run the X server. For example, use <code>startx -- -ardelay 250 -arinterval 20 vt1</code> in your .bashrc or <a href="https://github.com/chadvoegele/configs/blob/master/chadsurface/.zshrc">.zshrc</a>.
+                        </p>
+
+                        <h4>Backlight</h4>
+                        <p>
+                        Change the backlight brightness with <code>xbacklight -set 10</code>.
+                        </p>
+
+                        <h4>HiDPI</h4>
+                        <p>
+                        The high-pixel density display on the Surface 3 will make some applications look small. Follow the <a href="https://wiki.archlinux.org/index.php/HiDPI">HiDPI instructions</a> to configure your applications for the HiDPI display.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12 col-lg-12">
+                      <div class="row">
+                        <h3>Software</h3>
+                        <p>
+                        Utilizing the Surface 3 as a laptop does not require special software, but with the lack of a keyboard in tablet mode some additions are necessary.
+                        </p>
+
+                        <h4>Xournal</h4>
+                        <p>
+                        Xournal needs some configuration to behave like OneNote. In particular, to drag the page with your finger but still use the pen to write requires <a href="https://github.com/chadvoegele/configs/blob/master/chadsurface/.xournal/config">enabling</a> 'Touchscreen as Hand Tool' and setting the touchscreen device to 'Surface3 SPI Capacitive TouchScreen'.
+                        </p>
+
+                        <p>
+                        Occasionally, I see phantom strokes in the top-right corner that add unwanted outbursts to my note. (This is very common when using the <code>evdev</code> driver but not as often with <code>libinput</code>).
+                        </p>
+
+                        <p>
+                        <img style="display: block; margin-left: auto; margin-right: auto;" width="400" src="xournal_pen_outburst.png" />
+                        </p>
+
+                        <p>
+                        A temporary, hacky <a href="https://gist.github.com/chadvoegele/ab34aa7fb7cd2c1d4ce644fd67c39440">fix</a> is to ignore stokes with an unusually large hypotenuse.
+                        </p>
+
+                        <p>
+                        <script src="https://gist.github.com/chadvoegele/ab34aa7fb7cd2c1d4ce644fd67c39440.js"></script>
+                        </p>
+
+                        <h4>On-screen Keyboard</h4>
+                        <p>
+                        For a touch keyboard, I've found <a href="https://launchpad.net/onboard">onboard</a> to work well.
+                        </p>
+
+                        <h4>Application Switching</h4>
+                        <p>
+                        To switch applications without the keyboard, the <a href="https://github.com/richardgv/skippy-xd">skippy-xd</a> application emulates the Mac OS X exposé feature. A switch can be activated using a hardware button such as Volume-Up with <code>xbindkeys</code>.
+                        </p>
+
+                        <h4>Easystroke</h4>
+                        <p>
+                        Arbitrary commands and actions can be executed with pen gestures through <a href="https://github.com/thjaeger/easystroke">easystroke</a>. This includes interaction with the window manager or X using automation tools such as <code>wmctrl</code>, <code>xdotool</code>, and <code>xte</code>.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12 col-lg-12">
+                      <div class="row">
+                        <h3>Issues</h3>
+                        <p>
+                        These features do not work in Linux:
+                        <ul>
+                          <li>Second button on pen</li>
+                          <li>Top, purple button on pen</li>
+                        </ul>
+                        </p>
+
+                        <p>
+                        These features I haven't tested:
+                        <ul>
+                          <li>Display port output</li>
+                          <li>Cameras</li>
+                          <li>Lid switch</li>
+                        </ul>
+                        </p>
+
+                        <p>
+                        Patches are welcome!
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12 col-lg-12">
+                      <div class="row">
+                        <h3>Conclusion</h3>
+                        <p>
+                        This setup makes my Surface 3 work great as a pen and paper replacement and as a tablet for PDF reading! With Wi-Fi turned off, I get up to 13 hours battery life and up to 9 with it on.
+                        </p>
+                        <p>
+                        I hope this post might be useful for someone else trying to run Arch on their Surface 3!
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12 col-lg-12">
+                      <div class="row">
+                        <h3>Acknowledgements</h3>
+                        <p>
+                        Much of the hardware support for the Surface 3 was added by:
+                        <ul>
+                          <li>Benjamin Tissores</li>
+                          <li>Bastien Nocera</li>
+                          <li>Stephen Just</li>
+                        </ul>
+                        Many thanks to them!
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12 col-lg-12">
+                      <div class="row">
+                        <h3>Comments</h3>
+                        <div id="disqus_thread"></div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div><!--//content-->
+          </div><!--//section-inner-->
+        </section><!--//section-->
+
+      </div><!--//primary-->
+    </div><!--//row-->
+  </div><!--//masonry-->
+
+  <!-- Javascript -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="../assets/js/ga.js"></script>
+  <script type="text/javascript">set_ga('UA-83937312-3');</script>
+  <script>
+     var disqus_config = function () {
+     this.page.url = 'https://blog.chadvoegele.com/posts/post2.html';
+     this.page.identifier = 'post2-arch_on_surface3';
+     };
+  (function() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://blog-chadvoegele.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</body>
+</html>
