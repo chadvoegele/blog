@@ -1,0 +1,35 @@
+header {
+  margin: 8px;
+}
+
+body {
+  font-family: sans;
+}
+
+body .main {
+  width: 100%; max-width: 800px;
+  margin: auto auto;
+}
+
+body .content {
+  margin: 8px;
+}
+
+article p {
+  margin: 8px 0px;
+}
+
+article p.date {
+  float: left;
+  margin-right: 8px;
+}
+
+article p.title {
+  float: left;
+}
+
+article::after {
+  content: "";
+  clear: both;
+  display: table;
+}

@@ -1,0 +1,14 @@
+---
+layout: base.njk
+title: Home
+---
+{% for post in collections.post | reverse %}
+  <article>
+    <p class="date">
+      {{ post.data.page.date.toLocaleDateString("en-US", {"timeZone": "UTC"}) }}
+    </p>
+    <p class="title">
+      <a href="{{ post.url | url }}">{{ post.data.title }}</a>
+    </p>
+  </article>
+{% endfor %}

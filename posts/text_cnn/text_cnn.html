@@ -1,0 +1,331 @@
+---
+layout: base.njk
+title: Using CNNs To Understand Yelp Users Reviews
+date: 2016-09-21
+tags: post
+---
+<h2>Using CNNs To Understand Yelp Users Reviews</h2>
+<p>
+Unstructured text is hard to process and understand in
+large amounts. Typically this section of the data set is
+passed over in favor quantitative questions like "Rate your
+food on a scale from 1 to 5." Let's see if the
+world-famous deep networks can come to the rescue.
+</p>
+
+<h3>Data</h3>
+<p>
+I grabbed a Yelp review
+<a href="https://www.kaggle.com/c/yelp-recsys-2013/data">data set</a>
+from Kaggle that contained review text and star ratings. Here are some examples.
+</p>
+
+<table>
+  <tr>
+    <th>Review</th>
+    <th>Stars</th>
+  </tr>
+  <tr>
+    <td>
+      Good, imaginative food, excellent service and
+      atmosphere. The duck empanada appetizer was the
+      highlight. Wine list a little on the short side,
+      Victoria beer on tap a plus and top self margaritas
+      were good but over priced. Overall deserves 4.5 stars
+      due to server Lauren.
+    </td>
+    <td>4</td>
+  </tr>
+  <tr>
+    <td>
+      Really? Not very professional and merely sub
+      par. Tiny and cramped salon. No top coats for
+      finger nails or toes and no scrubbing the
+      balls of my feet. (Which is why most of us GO
+      get a pedicure) Seemed like they wanted to
+      sell me some all natural products, while
+      trying to pull me in with their "fun"
+      personality. Sorry, I'm going back to Capri
+      Nails!
+    </td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td>
+      I really do like this place! I loove the pad
+      thai! it's really filling and yummy! I don't
+      care for the key lime pie, it's too sour for
+      me. I also love the pear and  baby spinach
+      salad, that's always amazing! I've been going
+      there for a couple of years now and is one of
+      my favorite resturants.
+    </td>
+    <td>3</td>
+  </tr>
+</table>
+
+<p>
+Most natural language processing algorithms operate on
+words rather than long strings of text so I first broke
+each of the reviews into sentences and broke the
+sentences into words. I found the <a
+  href="https://spacy.io/">Spacy</a> library to be
+performant and accurate for this task.
+</p>
+
+<p>
+Some reviews contained links and other non-word text
+which I stripped using Spacy's <code>is_oov</code> function.
+</p>
+
+<h3>Convolutional Neural Networks</h3>
+<p>
+Convolutional Neural Networks are data processing
+algorithms that rose to fame after achieving
+<a href="https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf">impressive
+  results</a> in image processing. Sometime after this
+they also started to be used for
+<a href="http://www.jmlr.org/papers/volume12/collobert11a/collobert11a.pdf">text</a>
+<a href="https://arxiv.org/pdf/1408.5882v2.pdf">processing</a>.
+These algorithms work by converting sentences into
+"images" through special vectors called
+<em>embeddings</em> that represent that meaning of a
+word.
+</p>
+
+<p>
+For analyzing the Yelp review text, I started from a
+<a href="https://www.tensorflow.org/">TensorFlow</a>
+<a href="http://www.wildml.com/2015/12/implementing-a-cnn-for-text-classification-in-tensorflow/">implementation</a>
+by Denny Britz and made two modifications.
+
+<ol>
+  <li>
+    Rather than train my own word embeddings, I used
+    <a href="https://code.google.com/archive/p/word2vec/">pre-trained ones</a> from Google.
+  </li>
+  <li>
+    Since the Yelp review text contains multiple
+    sentences, I expanded the sentence "image" into
+    multiple images and stacked them on top of one
+    another. From TensorFlow's perspective, these
+    appear as several color channels.
+  </li>
+</ol>
+</p>
+
+<p>
+Each review is turned into cube with one dimension for
+the number of sentences, one for the number of words in
+a sentence, and one for representing the word meaning.
+</p>
+
+<p>
+I trained the CNN using the first 40% of the dataset
+for training and the next 10% for validation. The
+remaining 50% wouldn't fit into memory.
+</p>
+
+<p>
+I used root-mean-squared error to measure how well the
+model was fitting the data.
+<span id="tex-error" style="text-align: center;"></span>
+</p>
+
+<p>
+During training, I captured the batch error after every
+iteration. After 500 batches, I calculated the error
+for the entire training set and validation set.
+</p>
+
+<img height="100%" width="100%" src="cnn_training_loss.svg"/>
+
+<p>
+After training finished, I had a validation error of
+<b>1.02</b>, meaning the model is off by roughly 1
+star.
+</p>
+
+<p>
+Is this good?! Since this isn't for any specific
+application, it's hard to say. But we can try comparing
+to other approaches to gauge if this is reasonable
+performance.
+</p>
+
+<h3>Word Frequency Regression</h3>
+<p>
+Let's try a simple approach based on
+number of times key words appear in the review text. We
+might expect that words like "great" and "fantastic"
+appear more often in 5-star reviews. We can use
+these word counts as a numerical summary of the review
+and run a standard linear regression.
+</p>
+
+<p>
+To find these important words, I used a
+<a href="http://dimacs.rutgers.edu/~graham/pubs/papers/encalgs-mg.pdf">
+  Misra-Gries
+</a>
+style algorithm to find the most frequent words for a
+fixed number of stars. This approach treats the words
+in the reviews as a stream, processing them one by one.
+This gives a fast and memory-efficient algorithm at the
+expense of some inaccuracy in the results.
+</p>
+
+<p>
+Not surprisingly, the most common words in reviews are
+function words like "the", "a", and "I". To handle
+these, I removed all words which appeared in 4 or more
+star ratings. After this, I took the top ten words to
+find the key words for each star rating.
+</p>
+
+<table>
+  <tr>
+    <th>1</th>
+    <th>2</th>
+    <th>3</th>
+    <th>4</th>
+    <th>5</th>
+  </tr>
+  <tr>
+    <td>said</td>
+    <td>two</td>
+    <td>try</td>
+    <td>love</td>
+    <td>love</td>
+  </tr>
+  <tr>
+    <td>her</td>
+    <td>said</td>
+    <td>ok</td>
+    <td>try</td>
+    <td>best</td>
+  </tr>
+  <tr>
+    <td>told</td>
+    <td>bad</td>
+    <td>bad</td>
+    <td>friendly</td>
+    <td>friendly</td>
+  </tr>
+  <tr>
+    <td>minutes</td>
+    <td>minutes</td>
+    <td>though</td>
+    <td>best</td>
+    <td>amazing</td>
+  </tr>
+  <tr>
+    <td>asked</td>
+    <td>theater</td>
+    <td>love</td>
+    <td>delicious</td>
+    <td>try</td>
+  </tr>
+  <tr>
+    <td>bad</td>
+    <td>hotel</td>
+    <td>burger</td>
+    <td>definitely</td>
+    <td>delicious</td>
+  </tr>
+  <tr>
+    <td>another</td>
+    <td>another</td>
+    <td>sauce</td>
+    <td>fresh</td>
+    <td>fresh</td>
+  </tr>
+  <tr>
+    <td>ever</td>
+    <td>ok</td>
+    <td>being</td>
+    <td>happy</td>
+    <td>ever</td>
+  </tr>
+  <tr>
+    <td>should</td>
+    <td>day</td>
+    <td>d</td>
+    <td>hour</td>
+    <td>awesome</td>
+  </tr>
+  <tr>
+    <td>took</td>
+    <td>drinks</td>
+    <td>chili</td>
+    <td>salad</td>
+    <td>favorite</td>
+  </tr>
+</table>
+
+<p>
+I collapsed these key words into one set and the
+counted their frequency in each review to build a
+feature vector. Using
+<a href="http://scikit-learn.org/">
+  scikit-learn
+</a>
+'s, I ran a linear regression of this feature vector on
+the star ratings using the same dataset as in the CNN
+approach.
+</p>
+
+<p>
+This gave a training error of <b>1.09</b> and a validation
+error of <b>1.09</b>.
+</p>
+
+<p>
+So the fancy CNN did about the same as the simple word
+frequency approach. It's clear from the training errors
+that the CNN is over-fitting the training data which
+requires further investigation.  Both methods could be
+improved further. I didn't spend any time in the dark
+art of network architecture design. Could fewer
+convolutional layers be better?  Also, the frequency
+approach might benefit greatly from bigram counts in
+addition to unigram counts.
+</p>
+
+<p>
+Both methods can be used to gain insights from the
+review text. In particular, we can investigate the
+weights learned during training to find features that
+the models think are important. Despite the CNN's more
+complicated structure, there are
+<a href="https://www.cs.nyu.edu/~fergus/papers/zeilerECCV2014.pdf">
+  some promising ideas
+</a>
+on how to interpret the weights.
+</p>
+
+<p>
+The code used to generate the results in the post is available
+<a href="https://github.com/chadvoegele/blog-textcnn">
+  here
+</a>.
+</p>
+
+<h3>Kudos</h3>
+<p>
+<ul>
+  <li>Ye Zhang for introducing me to text processing using CNNs</li>
+  <li>Denny Britz for his great post on using TensorFlow for text CNNs</li>
+  <li>Yoon Kim for his original work on getting CNNs to work for text</li>
+</ul>
+</p>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/katex.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/katex.min.js"></script>
+<script>
+katex.render(
+  "error = \\sqrt{\\frac{1}{n} \\sum (y-\\hat{y})^2}",
+  document.getElementById('tex-error'),
+  { displayMode: true }
+);
+</script>

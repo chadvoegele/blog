@@ -1,0 +1,141 @@
+---
+layout: base.njk
+title: About
+---
+<style>
+h4 {
+  margin-bottom: 8px;
+}
+
+span.left {
+  float: left;
+}
+
+span.right {
+  float: right;
+  text-align: right;
+}
+
+div.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+</style>
+
+{% macro left_right(left, right) %}
+<div class="clearfix">
+<span class="left">{{ left | safe }}</span>
+<span class="right">{{ right | safe }}</span>
+</div>
+{% endmacro %}
+
+<h2>Chad Voegele</h2>
+
+<p>
+<span id="email"></span><br />
+<a href="https://www.linkedin.com/in/chadvoegele">LinkedIn</a><br />
+<a href="https://github.com/chadvoegele">GitHub</a>
+</p>
+
+<h4>Work Experience</h4>
+{{ left_right('<a href="https://aws.amazon.com/">Amazon Web Services</a>', 'Seattle, WA') }}
+{{ left_right('Software Engineer', 'August 2018 - Now') }}
+
+<p>
+I joined the Elastic Block Storage team.
+</p>
+
+{{ left_right('<a href="https://www.qualtrics.com/">Qualtrics</a>', 'Seattle, WA') }}
+{{ left_right('Software Engineer', 'May 2017 - June 2018') }}
+{{ left_right('Software Engineering Intern', 'Summer 2016') }}
+
+<p>
+As part of the survey data reporting team, I co-wrote an
+asynchronous robust exports micro-service used by several
+products. As an intern, I built and released a dynamic,
+high-dimensional pivot table for the real-time customer
+experience dashboard product.
+</p>
+
+{{ left_right('<a href="https://cmegroup.com">CME Group</a>', 'Chicago, IL') }}
+{{ left_right('Manager Quantitative Risk Management', 'July 2014 - June 2015') }}
+{{ left_right('Quantitative Risk Management Associate', 'February 2013 - July 2014') }}
+{{ left_right('Quantitative Risk Management Analyst', 'July 2011 - February 2013') }}
+{{ left_right('Quantitative Risk Management Intern', 'December 2010 - July 2011') }}
+
+<p>
+My group designed, built, and supported over-the-counter
+(OTC) interest rate swap (IRS) clearing solutions. This
+included price, margin, default fund model development.
+</p>
+
+<p>
+Most of my work was focussed on the portfolio margining
+offering that allows clients to achieve savings by
+offsetting OTC IRS risk with interest rate futures.
+</p>
+
+<h4>Education</h4>
+{{ left_right('<a href="https://www.utexas.edu">University of Texas - Austin</a>', 'Austin, TX') }}
+{{ left_right('M. S. Computer Science', 'August 2015 - May 2017') }}
+<p></p>
+
+{{ left_right('<a href="https://www.uchicago.edu">University of Chicago</a>', 'Chicago, IL') }}
+{{ left_right('M. S. Financial Mathematics', 'September 2010 - June 2012') }}
+<p></p>
+
+{{ left_right('<a href="http://www.virginia.edu">University of Virginia</a>', 'Charlottesville, VA') }}
+{{ left_right('B. A. Mathematics and Physics', 'August 2006 - May 2010') }}
+
+<h4>Research Experience</h4>
+{{ left_right('<a href="https://www.utexas.edu">University of Texas - Austin</a>', 'Austin, TX') }}
+{{ left_right('Research Assistant', 'January 2017 - May 2017') }}
+
+<p>
+I worked with <a href="http://cs.rochester.edu/~sree/">Dr. Sreepathi Pai</a>
+in <a href="https://www.cs.utexas.edu/~pingali/">Dr. Keshav Pai</a>'s research
+group to study high-performance subgraph isomorphism and
+k-truss identification algorithms. We implemented parallel
+GPU and CPU k-truss algorithms using the
+<a href="http://cs.rochester.edu/~sree/papers/sree-oopsla2016.pdf">IrGL</a> framework and
+<a href="http://cs.rochester.edu/~sree/papers/cvoegele-2017.pdf">published</a>
+the research for the
+<a href="http://graphchallenge.mit.edu/champions">2017 IEEE HPEC Graph Challenge</a>.
+</p>
+
+{{ left_right('<a href="https://www.ncsu.edu">North Carolina State University</a>', 'Raleigh, NC') }}
+{{ left_right('Research Assistant', 'Summer 2009') }}
+
+<p>
+I worked with Dr. Arkady Kheyfets in a National Science
+Foundation (NSF) Research Experience for Undergraduates (REU)
+program. We studied charged spherically symmetric objects in
+the context of general relativity. By deriving the charged
+Oppenheimer-Volkoff equation, we showed that an electron
+cannot be constructed out of purely electromagnetic mass. This
+work was <a href="https://arxiv.org/pdf/0910.1252.pdf">published</a>
+in the International Journal of Theoretical Physics.
+</p>
+
+{{ left_right('<a href="https://purdue.edu">Purdue University</a>', 'West Lafayette, IN') }}
+{{ left_right('Research Assistant', 'Summer 2008') }}
+
+<p>
+I worked with Dr. Jiangping Hu in a National Science
+Foundation (NSF) Research Experience for Undergraduates (REU)
+program. We studied the properties of multiferroic materials
+that exhibit coupled ferroelectric and ferromagnetic behavior.
+</p>
+
+<h4>MOOCs</h4>
+{{ left_right('<a href="https://www.coursera.org/course/ml">Machine Learning (Coursera)</a>', 'April 2013') }}
+{{ left_right('<a href="https://www.edx.org/course/algorithms-design-and-analysis">Algorithms 1 (Coursera)</a>', 'January 2013') }}
+{{ left_right('<a href="https://cs.stanford.edu/people/widom/DB-mooc.html">Databases (Class2Go)</a>', 'January 2013') }}
+{{ left_right('<a href="https://www.coursera.org/course/progfun">Functional Programming Principles in Scala (Coursera)</a>', 'September 2012') }}
+
+<script>
+const data = [99, 104, 97, 100, 64, 118, 111, 101, 103, 101, 108, 101, 46, 109, 101]
+const email = String.fromCharCode.apply(String, data)
+document.getElementById("email").innerText = email
+</script>
