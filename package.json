@@ -9,8 +9,7 @@
   },
   "author": "Chad Voegele",
   "license": "MIT",
-  "dependencies": {},
   "devDependencies": {
-    "@11ty/eleventy": "^0.12.1"
+    "@11ty/eleventy": "^1.0.0"
   }
 }
