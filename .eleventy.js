@@ -6,4 +6,7 @@ module.exports = function(eleventyConfig) {
     "png",
     "svg"
   ]);
+  eleventyConfig.addPassthroughCopy("posts/**/*{.js,.wasm}");
+  eleventyConfig.addPassthroughCopy("posts/suppalist/model/*");
+  eleventyConfig.setServerPassthroughCopyBehavior("passthrough");
 }
