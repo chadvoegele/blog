@@ -39,13 +39,20 @@ div.clearfix::after {
 </p>
 
 <h4>Work Experience</h4>
+{{ left_right('<a href="https://www.microsoft.com/">Microsoft</a>', 'Remote, US') }}
+{{ left_right('Senior Research Engineer', 'November 2023 - Now') }}
+
+<p>
+Currently, I'm researching techniques to run small language models (SLMs) on edge devices, including end-to-end training of a 0.3B <a href="https://github.com/microsoft/encoder-decoder-slm/">encoder-decoder model</a>, quantizing models using state-of-the-art methods such as SpinQuant, and working with the QNN SDK to utilize Qualcomm NPUs.
+</p>
+
 {{ left_right('<a href="https://aws.amazon.com/">Amazon Web Services</a>', 'Seattle, WA') }}
-{{ left_right('Senior Machine Learning Engineer', 'December 2021 - Now') }}
+{{ left_right('Senior Machine Learning Engineer', 'December 2021 - November 2023') }}
 {{ left_right('Software Engineer', 'August 2018 - December 2021') }}
 
 <p>
-Currently, I'm building the data plane component for the Amazon Bedrock
-foundation model service. I focus on providing an optimized inference server
+I built the data plane component for the Amazon Bedrock
+foundation model service. I focused on providing an optimized inference server
 for Amazon's Titan models, including Large Language Models (LLMs).
 </p>
 
@@ -120,36 +127,6 @@ GPU and CPU k-truss algorithms using the
 the research for the
 <a href="http://graphchallenge.mit.edu/champions">2017 IEEE HPEC Graph Challenge</a>.
 </p>
-
-{{ left_right('<a href="https://www.ncsu.edu">North Carolina State University</a>', 'Raleigh, NC') }}
-{{ left_right('Research Assistant', 'Summer 2009') }}
-
-<p>
-I worked with Dr. Arkady Kheyfets in a National Science
-Foundation (NSF) Research Experience for Undergraduates (REU)
-program. We studied charged spherically symmetric objects in
-the context of general relativity. By deriving the charged
-Oppenheimer-Volkoff equation, we showed that an electron
-cannot be constructed out of purely electromagnetic mass. This
-work was <a href="https://arxiv.org/pdf/0910.1252.pdf">published</a>
-in the International Journal of Theoretical Physics.
-</p>
-
-{{ left_right('<a href="https://purdue.edu">Purdue University</a>', 'West Lafayette, IN') }}
-{{ left_right('Research Assistant', 'Summer 2008') }}
-
-<p>
-I worked with Dr. Jiangping Hu in a National Science
-Foundation (NSF) Research Experience for Undergraduates (REU)
-program. We studied the properties of multiferroic materials
-that exhibit coupled ferroelectric and ferromagnetic behavior.
-</p>
-
-<h4>MOOCs</h4>
-{{ left_right('<a href="https://www.coursera.org/course/ml">Machine Learning (Coursera)</a>', 'April 2013') }}
-{{ left_right('<a href="https://www.edx.org/course/algorithms-design-and-analysis">Algorithms 1 (Coursera)</a>', 'January 2013') }}
-{{ left_right('<a href="https://cs.stanford.edu/people/widom/DB-mooc.html">Databases (Class2Go)</a>', 'January 2013') }}
-{{ left_right('<a href="https://www.coursera.org/course/progfun">Functional Programming Principles in Scala (Coursera)</a>', 'September 2012') }}
 
 <script>
 const data = [99, 104, 97, 100, 64, 118, 111, 101, 103, 101, 108, 101, 46, 109, 101]
