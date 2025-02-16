@@ -8,5 +8,6 @@ module.exports = function(eleventyConfig) {
   ]);
   eleventyConfig.addPassthroughCopy("posts/**/*{.js,.wasm}");
   eleventyConfig.addPassthroughCopy("posts/suppalist/model/*");
+  eleventyConfig.ignores.add("posts/suppalist/copy.js");
   eleventyConfig.setServerPassthroughCopyBehavior("passthrough");
 }

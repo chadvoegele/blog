@@ -1,11 +1,12 @@
 {
   "name": "blog",
   "version": "1.0.0",
-  "description": "Chad Voegele's blog",
+  "description": "Chad Voegele's Blog",
   "scripts": {
-    "build": "npx eleventy",
-    "serve": "npx eleventy --serve",
-    "debug": "DEBUG=* npx eleventy"
+    "copy": "posts/suppalist/copy.js",
+    "build": "npm run copy && npx eleventy",
+    "serve": "npm run copy && npx eleventy --serve",
+    "debug": "npm run copy && DEBUG=* npx eleventy"
   },
   "author": "Chad Voegele",
   "license": "MIT",
