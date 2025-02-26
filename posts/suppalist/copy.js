@@ -2,7 +2,7 @@
 import fs from 'fs'
 import path from 'path'
 
-const sourceDir = path.join(import.meta.dirname, '../../../suppa/suplistjs/')
+const sourceDir = path.join(import.meta.dirname, '../../../github.com/chadvoegele/suppa/suplistjs/')
 const outputDir = import.meta.dirname
 
 function copyFile(source, destination) {
