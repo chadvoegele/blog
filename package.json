@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Chad Voegele's Blog",
   "scripts": {
-    "copy": "posts/suppalist/copy.js",
+    "copy": "posts/suppalist/copy.mjs",
     "build": "npm run copy && npx eleventy",
     "serve": "npm run copy && npx eleventy --serve",
     "debug": "npm run copy && DEBUG=* npx eleventy"
