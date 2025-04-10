@@ -1,0 +1,160 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    padding: 30px;
+    text-align: center;
+    margin: auto;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.progress-container {
+    margin-bottom: 30px;
+}
+
+#progress-text {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.progress-bar {
+    height: 10px;
+    background-color: #eaeaea;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+#progress-fill {
+    height: 100%;
+    background-color: #4caf50;
+    width: 0;
+    transition: width 0.3s ease;
+}
+
+#question-container {
+    margin-bottom: 20px;
+}
+
+#question {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+#answer-input {
+    width: 80%;
+    padding: 12px 15px;
+    font-size: 18px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+#answer-input:focus {
+    border-color: #4caf50;
+    outline: none;
+}
+
+button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+button:hover {
+    background-color: #3e8e41;
+}
+
+#next-btn, #restart-btn {
+    background-color: #2196f3;
+}
+
+#next-btn:hover, #restart-btn:hover {
+    background-color: #0b7dda;
+}
+
+#result-container {
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#result-container.hidden {
+    display: none;
+}
+
+#result-icon {
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+.correct #result-icon::after {
+    content: '✓';
+    color: #4caf50;
+}
+
+.incorrect #result-icon::after {
+    content: '✗';
+    color: #f44336;
+}
+
+#result-text {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.hidden {
+    display: none;
+}
+
+#summary-container {
+    text-align: center;
+}
+
+#summary-container h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+#summary-container p {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: #555;
+}
+
+#final-score {
+    font-weight: bold;
+    color: #2196f3;
+}

@@ -1,0 +1,43 @@
+---
+layout: base.njk
+title: Math Facts Quiz
+date: 2025-04-09
+tags: post
+---
+<link rel="stylesheet" href="styles.css">
+
+<div style="margin: 1em 0 2em 0;">
+My son is in first grade and is working on his math facts. I used Claude Code to put together this simple quiz app.
+</div>
+
+<div class="container">
+    <h1>Math Facts Quiz</h1>
+    <div class="progress-container">
+        <div id="progress-text">Question 1/30</div>
+        <div class="progress-bar">
+            <div id="progress-fill"></div>
+        </div>
+    </div>
+
+    <div id="quiz-container">
+        <div id="question-container">
+            <div id="question">What is 1 + 1?</div>
+            <input type="number" id="answer-input" placeholder="Enter your answer" autofocus>
+            <button id="submit-btn">Submit</button>
+        </div>
+
+        <div id="result-container" class="hidden">
+            <div id="result-icon"></div>
+            <div id="result-text"></div>
+            <button id="next-btn">Next Question</button>
+        </div>
+    </div>
+
+    <div id="summary-container" class="hidden">
+        <h2>Quiz Complete!</h2>
+        <p>Your score: <span id="final-score">0</span></p>
+        <button id="restart-btn">Try Again</button>
+    </div>
+</div>
+
+<script src="script.js"></script>
