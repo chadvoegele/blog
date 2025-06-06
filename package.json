@@ -4,9 +4,10 @@
   "description": "Chad Voegele's Blog",
   "scripts": {
     "copy": "posts/suppalist/copy.mjs",
-    "build": "npm run copy && npx eleventy",
-    "serve": "npm run copy && npx eleventy --serve",
-    "debug": "npm run copy && DEBUG=* npx eleventy"
+    "build": "npx eleventy",
+    "serve": "npx eleventy --serve",
+    "debug": "DEBUG=* npx eleventy",
+    "all": "npm run copy && npm run build"
   },
   "author": "Chad Voegele",
   "license": "MIT",
