@@ -13,9 +13,16 @@ then
   exit 1
 fi
 
-aws s3 sync --delete _site s3://${BUCKET_NAME}
+if [[ -z $1 ]]
+then
+  aws s3 sync --delete _site s3://${BUCKET_NAME}
+  files=$(find _site -mindepth 2 -type f -name "index.html")
+else
+  aws s3 sync --delete _site/$1 s3://${BUCKET_NAME}/$1
+  files=_site/$1/index.html
+fi
 
-for f in $(find _site -mindepth 2 -type f -name "index.html")
+for f in $files
 do
   target=${f#_site/}
 
