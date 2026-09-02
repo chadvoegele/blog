@@ -1,0 +1,84 @@
+---
+layout: base.njk
+title: Composable Claws
+date: 2026-09-01
+tags: post
+---
+<h2>Composable Claws</h2>
+
+<p>
+For hosting a personal agent, or claw, there is the seminal <a href="https://github.com/openclaw/openclaw">OpenClaw</a> and its monolithic cousins, such as <a href="https://github.com/NousResearch/hermes-agent">Hermes</a> and <a href="https://github.com/nearai/ironclaw">IronClaw</a>. At the opposite end of the architectural spectrum are the avant-garde, build-from-nothing projects such as <a href="https://github.com/nanocoai/nanoclaw">NanoClaw</a> and <a href="https://github.com/RalphMao/seedbot">Seedbot</a>.
+</p>
+
+<p>
+Both approaches have advantages, but I wanted the best of both: well-tested, engineered components with the flexibility to choose or build the features I need.
+</p>
+
+<p>
+Composable claws are built from modular components connected by established protocols. A client connects to a harness using <a href="https://agentclientprotocol.com/">ACP</a>, while the harness connects to MCP tools through <a href="https://modelcontextprotocol.io/">MCP</a> and CLI tools directly. You choose the components that make up your stack:
+</p>
+
+<ol>
+  <li>Model</li>
+  <li>Harness (ACP server, MCP client)</li>
+  <li>
+    Instructions
+    <ol>
+      <li><a href="https://agents.md/">AGENTS.md</a></li>
+      <li><a href="https://agentskills.io/">Skills</a></li>
+    </ol>
+  </li>
+  <li>
+    Tools
+    <ol>
+      <li>CLIs</li>
+      <li>MCP servers</li>
+    </ol>
+  </li>
+  <li>Frontend (ACP client)</li>
+  <li>(Optional) Sandboxing</li>
+  <li>(Optional) Network isolation</li>
+  <li>(Optional) Credential proxy</li>
+</ol>
+
+<figure>
+  <img src="composable_claw.svg" width="800" height="400" style="max-width: 100%; height: auto;" alt="Composable claw architecture: a frontend connects to a harness over ACP; the harness connects to a model over HTTPS, MCP tools through MCP servers, and CLI tools directly.">
+</figure>
+
+<p>
+The harness can be wrapped in a container for sandboxing and network isolation.
+</p>
+
+<p>
+Here is my stack:
+</p>
+
+<ol>
+  <li><strong>Model:</strong> GPT-5.6 (Sol and Luna), <a href="https://huggingface.co/Qwen/Qwen3.8-27B">Qwen 3.8 27B</a></li>
+  <li><strong>Harness:</strong> <a href="https://github.com/earendil-works/pi">Pi</a>, with <a href="https://github.com/svkozak/pi-acp">pi-acp</a></li>
+  <li><strong>Instructions:</strong> AGENTS.md</li>
+  <li>
+    <strong>Tools:</strong>
+    <ol>
+      <li><strong>CLIs:</strong> <a href="https://github.com/openclaw/gogcli">gog</a>, leda, <a href="https://github.com/8go/matrix-commander-rs">matrix-commander</a></li>
+      <li><strong>MCPs:</strong> <a href="https://github.com/jolks/mcp-cron">mcp-cron</a>, <a href="https://github.com/ChromeDevTools/chrome-devtools-mcp">chrome-devtools-mcp</a>, <a href="https://github.com/mnemosyne-oss/mnemosyne">mnemosyne</a></li>
+    </ol>
+  </li>
+  <li><strong>Clients:</strong> <a href="https://github.com/chadvoegele/matrix-acp-bridge">matrix-acp-bridge</a>, mcp-cron</li>
+  <li><strong>Network isolation:</strong> <a href="https://www.squid-cache.org/">squid</a></li>
+  <li><strong>Sandboxing:</strong> Docker</li>
+</ol>
+
+<p>
+To run multiple profiles, copy the same stack and update the instructions and tools for each one.
+</p>
+
+<p>
+Think it is too much to configure? We have a tool for that!
+</p>
+
+<h3>Example Multi-profile Docker Compose Setup</h3>
+
+<p>
+<script src="https://gist.github.com/chadvoegele/567a15ed7c65d67e3b560d4ac8803cc7.js"></script>
+</p>
