@@ -12,6 +12,6 @@
   "author": "Chad Voegele",
   "license": "MIT",
   "devDependencies": {
-    "@11ty/eleventy": "^3.1.2"
+    "@11ty/eleventy": "^3.1.6"
   }
 }
