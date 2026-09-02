@@ -7,15 +7,15 @@ tags: post
 <h2>Composable Claws</h2>
 
 <p>
-For hosting a personal agent, or claw, there is the seminal <a href="https://github.com/openclaw/openclaw">OpenClaw</a> and its monolithic cousins, such as <a href="https://github.com/NousResearch/hermes-agent">Hermes</a> and <a href="https://github.com/nearai/ironclaw">IronClaw</a>. At the opposite end of the architectural spectrum are the avant-garde, build-from-nothing projects such as <a href="https://github.com/nanocoai/nanoclaw">NanoClaw</a> and <a href="https://github.com/RalphMao/seedbot">Seedbot</a>.
+For hosting a personal agent, or claw, there is the seminal <a href="https://github.com/openclaw/openclaw">OpenClaw</a> and its monolithic cousins, such as <a href="https://github.com/NousResearch/hermes-agent">Hermes</a> and <a href="https://github.com/nearai/ironclaw">IronClaw</a>. At the opposite end of the architectural spectrum are the avant-garde, build-from-nothing projects such as <a href="https://github.com/nanocoai/nanoclaw">NanoClaw</a> and <a href="https://github.com/RalphMao/seedbot">SeedBot</a>.
 </p>
 
 <p>
-Both approaches have advantages, but I wanted the best of both: well-tested, engineered components with the flexibility to choose or build the features I need.
+Both approaches have advantages, but I wanted the best of both: well-tested, well-engineered components with the flexibility to choose or build the features I need.
 </p>
 
 <p>
-Composable claws are built from modular components connected by established protocols. A client connects to a harness using <a href="https://agentclientprotocol.com/">ACP</a>, while the harness connects to MCP tools through <a href="https://modelcontextprotocol.io/">MCP</a> and CLI tools directly. You choose the components that make up your stack:
+Composable claws are built from modular components connected by established protocols. A client connects to a harness using <a href="https://agentclientprotocol.com/">ACP</a>, while the harness connects to tools via <a href="https://modelcontextprotocol.io/">MCP servers</a> and to CLI tools directly. You choose the components that make up your stack:
 </p>
 
 <ol>
@@ -54,8 +54,8 @@ Here is my stack:
 </p>
 
 <ol>
-  <li><strong>Model:</strong> GPT-5.6 (Sol and Luna), <a href="https://huggingface.co/Qwen/Qwen3.8-27B">Qwen 3.8 27B</a></li>
-  <li><strong>Harness:</strong> <a href="https://github.com/earendil-works/pi">Pi</a>, with <a href="https://github.com/svkozak/pi-acp">pi-acp</a></li>
+  <li><strong>Model:</strong> GPT-5.6 (Sol and Luna), <a href="https://huggingface.co/Qwen/Qwen3.8-27B">Qwen3.8-27B</a></li>
+  <li><strong>Harness:</strong> <a href="https://github.com/earendil-works/pi">Pi</a>, with <a href="https://github.com/svkozak/pi-acp">pi-acp</a>, <a href="https://github.com/nicobailon/pi-mcp-adapter">pi-mcp-adapter</a></li>
   <li><strong>Instructions:</strong> AGENTS.md</li>
   <li>
     <strong>Tools:</strong>
