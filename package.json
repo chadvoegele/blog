@@ -5,7 +5,6 @@
   "scripts": {
     "copy": "posts/suppalist/copy.mjs",
     "copy:handwriting": "node posts/handwriting_worksheets/copy.mjs",
-    "test": "node --test",
     "build": "npx @11ty/eleventy",
     "serve": "npx @11ty/eleventy --serve",
     "debug": "DEBUG=* npx @11ty/eleventy",
