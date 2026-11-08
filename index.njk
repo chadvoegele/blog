@@ -8,7 +8,7 @@ title: Home
       {{ post.data.page.date.toLocaleDateString("en-US", {"timeZone": "UTC"}) }}
     </p>
     <p class="title">
-      <a href="{{ post.url | url }}">{{ post.data.title }}</a>
+      <a href="{{ (post.data.appUrl or post.url) | url }}">{{ post.data.title }}</a>
     </p>
   </article>
 {% endfor %}
